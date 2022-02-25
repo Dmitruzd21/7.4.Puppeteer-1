@@ -7,9 +7,9 @@ let anotherPage;
    await page.goto("https://github.com/team");
 });
 
- /*  afterEach(async() => {
+  afterEach(async() => {
    await page.close();
- }); */
+ });
 
   test("The h1 header content'", async () => {
     await page.setDefaultTimeout(3000);
@@ -43,26 +43,29 @@ describe("Securuty Page", () => {
     await anotherPage.goto("https://github.com/features/security");
   });
 
- /*  afterEach(async() => {
+  afterEach(async() => {
     await anotherPage.close();
-  }); */
+  });
   
   test("Text of Header Buttom", async () => {
-     const headerElement = await anotherPage.waitForSelector(".color-shadow-small.js-sticky.w-full.z-3 > div > a");
+     const headerElement = await anotherPage.$(".color-shadow-small.js-sticky.w-full.z-3 > div > a");
      const elementText = await headerElement.evaluate (el => el.textContent);
      expect(elementText).toEqual("Security");
   });
 
   test("h1 Text", async () => {
     await page.setDefaultTimeout(5000);
-    const h1 = await anotherPage.waitForSelector("h1.h1-mktg.mb-4");
+    const h1 = await "h1.h1-mktg.mb-4";
     const h1Text = await anotherPage.$eval(h1, el => el.textContent);
-    expect(h1Text).toEqual("Secure at every step");
+    const h1TextAfterTransform1 = await h1Text.slice(0,15);
+    const h1TextAfterTransform2 = await h1Text.slice(16);
+    const h1TextAfterJoin = [h1TextAfterTransform1, h1TextAfterTransform2].join(" ");
+    expect(h1TextAfterJoin).toEqual("Secure at every step");
   });
 
   test("h4Span Text under h1", async () => {
-    const h4Span = anotherPage.waitForSelector("h4 span.color-fg-default");
-    const h4SpanText = anotherPage.$eval(h4Span, el => el.textContent);
+    const h4Span = await "h4 span.color-fg-default";
+    const h4SpanText = await anotherPage.$eval(h4Span, el => el.textContent);
     expect(h4SpanText).toEqual("Ship secure applications within the GitHub flow");
   });
 });
@@ -71,10 +74,4 @@ describe("Securuty Page", () => {
 // √ The first link attribute (1343 ms - 1855 - 1911)
 // √ The page contains Sign in button (1519 ms - 1562 - 1815)
 
-// Теги для h1 c текстом: "Secure at every step"
-// div:nth-child(1) div div h1.h1-mktg 
-// h1.h1-mktg.mb-4
 
-// Теги для h4 span с текстом: "Ship secure applications within the GitHub flow"
-// h4 span.color-fg-default
-// h4 > span
